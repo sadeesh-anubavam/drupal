@@ -1,0 +1,209 @@
+1. Create views-vies-***-tpl.php files
+2. add the pager code in tpl
+3. view should not be ajax
+4. add js
+5. add css
+
+.tpl files
+-----------
+<?php
+
+/**
+ * @file
+ * Main view template.
+ *
+ * Variables available:
+ * - $classes_array: An array of classes determined in
+ *   template_preprocess_views_view(). Default classes are:
+ *     .view
+ *     .view-[css_name]
+ *     .view-id-[view_name]
+ *     .view-display-id-[display_name]
+ *     .view-dom-id-[dom_id]
+ * - $classes: A string version of $classes_array for use in the class attribute
+ * - $css_name: A css-safe version of the view name.
+ * - $css_class: The user-specified classes names, if any
+ * - $header: The view header
+ * - $footer: The view footer
+ * - $rows: The results of the view query, if any
+ * - $empty: The empty text to display if the view is empty
+ * - $pager: The pager next/prev links to display, if any
+ * - $exposed: Exposed widget form/info to display
+ * - $feed_icon: Feed icon to display, if any
+ * - $more: A link to view more, if any
+ *
+ * @ingroup views_templates
+ */
+?>
+<div class="<?php print $classes; ?>">
+/*pager section */
+  <div class="top-pager">
+  <div class="total-count">
+<?php echo t('TOTAL ITEMS !total ', array('!total' => $view->total_rows)); ?>
+  </div>
+ 
+  <?php if ($pager): ?>
+   <div class="pager-links">
+ <div class="pager-first"><a href="/blog">FIRST</a></div>
+    <?php print $pager; ?>
+     <div class="pager-last"><a href="/blog?keys=&&page=<?php print floor($view->total_rows/6);?>">LAST</a></div>
+  </div>
+  <?php endif; ?>
+ 
+  </div>
+/*pager section */
+  <?php print render($title_prefix); ?>
+  <?php if ($title): ?>
+    <?php print $title; ?>
+  <?php endif; ?>
+  <?php print render($title_suffix); ?>
+  <?php if ($header): ?>
+    <div class="view-header">
+      <?php print $header; ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($exposed): ?>
+    <div class="view-filters">
+      <?php print $exposed; ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($attachment_before): ?>
+    <div class="attachment attachment-before">
+      <?php print $attachment_before; ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($rows): ?>
+    <div class="view-content">
+      <?php print $rows; ?>
+    </div>
+  <?php elseif ($empty): ?>
+    <div class="view-empty">
+      <?php print $empty; ?>
+    </div>
+  <?php endif; ?>
+/*pager section */
+ <div class="total-count">
+    
+<?php echo t('TOTAL ITEMS !total ', array('!total' => $view->total_rows)); ?>
+
+
+  </div>
+
+  <?php if ($pager): ?>
+  <div class="pager-links">
+  <div class="pager-first"><a href="/blog">FIRST</a></div>
+    <?php print $pager; ?>
+ 
+  <div class="pager-last"><a href="/blog?keys=&&page=<?php print floor($view->total_rows/6);?>">LAST</a></div>
+</div>
+   <?php endif; ?>
+/*pager section */
+  <?php if ($attachment_after): ?>
+    <div class="attachment attachment-after">
+      <?php print $attachment_after; ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($more): ?>
+    <?php print $more; ?>
+  <?php endif; ?>
+
+  <?php if ($footer): ?>
+    <div class="view-footer">
+      <?php print $footer; ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($feed_icon): ?>
+    <div class="feed-icon">
+      <?php print $feed_icon; ?>
+    </div>
+  <?php endif; ?>
+
+</div><?php /* class view */ ?>
+
+========================================================================================
+CSS
+
+/* pager style start */
+.front .view-blog .top-pager, .front .view-blog .total-count {
+  display: none;
+}
+.item-list .pager li {
+  background: #FFF;
+  border-radius: 3px;
+  margin-right: 4px;
+  text-shadow: 1px 1px #fff;
+  margin-left: 0px;
+  padding: 0px;
+}
+.view .total-count, .view-blog .item-list, .pager-first, .pager-last {
+  float: left;
+}
+.pager-links {
+  float: right;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+.view .top-pager .total-count,
+.view-blog .top-pager .item-list {
+  margin-bottom: 40px;
+}
+.view-blog .pager-first a {
+  border-right: 1px solid #666666;
+  height: 20px;
+  line-height: 23px;
+  margin: 0 10px 40px 0;
+  padding: 0 10px 0 0px;
+}
+.view-blog .pager-last a {
+  border-left: 1px solid #666666;
+  height: 20px;
+  line-height: 23px;
+  margin: 0 0px 40px 5px;
+  padding: 0 0px 0 10px;
+}
+.view-blog .pager-current {
+  border-left: 1px solid #666666;
+  border-right: 1px solid #666666;
+  height: 20px;
+  line-height: 23px;
+  margin: 0 10px 40px;
+  padding: 0 10px 0 10px !important;
+  border-radius: 0px !important;
+  font-weight: normal;
+}
+.view-blog .pager-current.next-hide {
+  border-right: 0 none;
+  margin-right: 0;
+  padding-right:5px !important;
+}
+.view-blog .pager-current.prev-hide {
+  border-left: 0 none;
+  margin-left: 0;
+  padding-left:0px !important;
+}
+.view .item-list .pager {
+  padding: 0px;
+}
+/* pager style end */
+
+
+=======================================================================================
+Js
+
+  if(jQuery(".pager-previous a").size()< 1) {
+    jQuery(".pager-previous").hide();
+    jQuery(".pager-current").addClass("prev-hide");
+  }
+  
+  if(jQuery(".pager-next a").size()< 1) {
+    jQuery(".pager-next").hide();
+     jQuery(".pager-current").addClass("next-hide");
+  }
+  jQuery(".view .pager-previous a").html("PREVIOUS");
+  jQuery(".view .pager-next a").html("Next");
+  jQuery(".view .pager-current").html("page "+jQuery(".view .pager-current").html());
