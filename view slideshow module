@@ -1,0 +1,18 @@
+view slideshow
+---------------
+example - "testimonial sidebar block" connect scrolling like slideshow
+
+module name - view slideshow 
+supporting file - jquery.cycle.all.js
+
+steps
+-----
+1. download "view slideshow" module and enable it
+2. download "jquery.cycle.all.js" file
+3. create folder "jquery.cycle" in "/sites/all/libraries/"
+4. paste "jquery.cycle.all.js" file in "/sites/all/libraries/jquery.cycle" folder
+5. create "block View" based on Testimonial content types.
+6. select "Format" option in block view configuration setting
+  - set to "view slideshow" option
+	- set other slideshow time and style option
+7. save and enjoy
